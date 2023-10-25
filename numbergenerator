@@ -1,0 +1,63 @@
+package javaapplication35;
+
+import java.util.Random;
+public class JavaApplication35 {
+  public static void main(String[] args) {
+        
+        NumberGenerator numberGenerator = new NumberGenerator();
+        SquareThread squareThread = new SquareThread(numberGenerator);
+        CubeThread cubeThread = new CubeThread(numberGenerator);
+
+        numberGenerator.start();
+        squareThread.start();
+        cubeThread.start();
+  }
+}  
+
+class NumberGenerator extends Thread {
+    private Random random = new Random();
+    private int number;
+
+    @Override
+    public void run() {
+        number = random.nextInt(100);
+        System.out.println("Generated number: " + number);
+    }
+
+    public int getNumber() {
+        return number;
+    }
+}
+
+class SquareThread extends Thread {
+    private NumberGenerator numberGenerator;
+
+    public SquareThread(NumberGenerator numberGenerator) {
+        this.numberGenerator = numberGenerator;
+    }
+
+    @Override
+    public void run() {
+        int number = numberGenerator.getNumber();
+        if (number % 2 == 0) {
+            int square = number * number;
+            System.out.println("Square of " + number + " is: " + square);
+        }
+    }
+}
+
+class CubeThread extends Thread {
+    private NumberGenerator numberGenerator;
+
+    public CubeThread(NumberGenerator numberGenerator) {
+        this.numberGenerator = numberGenerator;
+    }
+
+    @Override
+    public void run() {
+        int number = numberGenerator.getNumber();
+        if (number % 2 != 0) {
+            int cube = number * number * number;
+            System.out.println("Cube of " + number + " is: " + cube);
+        }
+    }
